@@ -487,6 +487,40 @@ class PlatformUtils:
             target = Target(user_id, private=True)
         return target
 
+    @classmethod
+    async def poke(
+        cls,
+        bot: Bot,
+        user_id: str,
+        group_id: str | None = None,
+    ) -> bool:
+        """发送戳一戳
+
+        参数:
+            bot: Bot
+            user_id: 用户id
+            group_id: 群组id
+        """
+        try:
+            await bot.call_api("poke", qq=user_id)
+        except Exception:
+            try:
+                if group_id:
+                    await bot.call_api(
+                        "group_poke", user_id=user_id, group_id=group_id
+                        )
+                else:
+                    await bot.call_api(
+                        "friend_poke", user_id=user_id
+                        )
+            except Exception:
+                logger.warning(
+                    "戳一戳发送失败，可能是协议端不支持...",
+                    "发送戳一戳",
+                )
+                return False
+        return True
+
 
 class BroadcastEngine:
     def __init__(
