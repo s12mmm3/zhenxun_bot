@@ -506,13 +506,9 @@ class PlatformUtils:
         except Exception:
             try:
                 if group_id:
-                    await bot.call_api(
-                        "group_poke", user_id=user_id, group_id=group_id
-                        )
+                    await bot.call_api("group_poke", user_id=user_id, group_id=group_id)
                 else:
-                    await bot.call_api(
-                        "friend_poke", user_id=user_id
-                        )
+                    await bot.call_api("friend_poke", user_id=user_id)
             except Exception:
                 logger.warning(
                     "戳一戳发送失败，可能是协议端不支持...",
